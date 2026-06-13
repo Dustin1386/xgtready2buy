@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>5 Sessions for $25 — XGT Fitness</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #1a1a1a;
+    --border: #2a2a2a;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --accent-glow: rgba(249,115,22,0.25);
+    --white: #ffffff;
+    --gray: #888888;
+    --success: #22c55e;
+    --error: #ef4444;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Ambient background glow */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -30%; left: -20%;
+    width: 200%; height: 200%;
+    background:
+      radial-gradient(ellipse at 65% 15%, rgba(249,115,22,0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 20% 75%, rgba(249,115,22,0.04) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── HEADER ──────────────────────────────────────────────────────── */
+  .site-header {
+    position: relative;
+    z-index: 10;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+  }
+
+  .site-header .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-logo img {
+    height: 44px;
+    width: auto;
+    display: block;
+  }
+
+  .header-badge {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(249,115,22,0.25);
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* ── HERO ─────────────────────────────────────────────────────────── */
+  .hero {
+    padding: 72px 0 64px;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    opacity: 0.85;
+  }
+
+  .hero-price-block {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  .hero-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(130px, 22vw, 200px);
+    line-height: 0.85;
+    color: var(--white);
+    letter-spacing: -4px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-number::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 80%; height: 60%;
+    background: radial-gradient(ellipse, rgba(249,115,22,0.2) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .hero-sessions-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 5vw, 48px);
+    letter-spacing: 6px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 8px;
+  }
+
+  .hero-price-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-for {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 5vw, 48px);
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .hero-dollar {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 10vw, 96px);
+    line-height: 1;
+    color: var(--accent);
+    letter-spacing: -2px;
+  }
+
+  .hero-tagline {
+    font-size: clamp(16px, 2.5vw, 20px);
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto 40px;
+  }
+
+  .hero-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 18px 40px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 0 0 0 var(--accent-glow);
+    animation: ctaPulse 2.8s ease-in-out infinite;
+    margin-bottom: 24px;
+  }
+
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+    50% { box-shadow: 0 0 0 12px transparent; }
+  }
+
+  .hero-cta-btn:hover {
+    background: #ea6c0a;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(249,115,22,0.3);
+    animation: none;
+  }
+
+  .hero-cta-btn:active { transform: scale(0.97); }
+
+  .hero-trust {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.5px;
+  }
+
+  .hero-trust-dot {
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+  }
+
+  /* ── FEATURES ────────────────────────────────────────────────────── */
+  .features {
+    padding: 64px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(249,115,22,0.3);
+    transform: translateY(-3px);
+  }
+
+  .feature-icon {
+    width: 44px; height: 44px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(249,115,22,0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 20px;
+  }
+
+  .feature-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .feature-body {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* ── DEAL SECTION ─────────────────────────────────────────────────── */
+  .deal {
+    padding: 64px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .deal-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .deal-left .deal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    letter-spacing: 1px;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .deal-title span { color: var(--accent); }
+
+  .deal-perks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .deal-perks li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 300;
+  }
+
+  .perk-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .deal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 36px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .deal-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  .deal-card-eyebrow {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 16px;
+  }
+
+  .deal-card-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 96px;
+    line-height: 0.9;
+    color: var(--accent);
+    letter-spacing: -3px;
+    margin-bottom: 8px;
+  }
+
+  .deal-card-sessions {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 24px;
+  }
+
+  .deal-card-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 20px;
+  }
+
+  .deal-card-note {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+  }
+
+  /* ── FINAL CTA ────────────────────────────────────────────────────── */
+  .final-cta {
+    padding: 80px 0 100px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .final-cta-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 7vw, 72px);
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .final-cta-title span { color: var(--accent); }
+
+  .final-cta-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 300;
+    margin-bottom: 36px;
+  }
+
+  /* ── BOOKING PANEL ───────────────────────────────────────────────── */
+  .booking-panel {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    padding-bottom: env(safe-area-inset-bottom);
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    max-height: 90vh;
+    max-height: 90dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .booking-panel.visible { transform: translateY(0); }
+
+  .booking-inner {
+    max-width: 560px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 28px 24px;
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .panel-header-text {}
+
+  .panel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 1px;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .panel-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .panel-close {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--gray);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.2s, color 0.2s;
+    line-height: 1;
+  }
+
+  .panel-close:hover { border-color: var(--gray); color: var(--white); }
+
+  /* FIELDS */
+  .booking-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .fields-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+
+  .field label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  .field input {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .field input:focus { border-color: rgba(249,115,22,0.5); }
+  .field input::placeholder { color: var(--gray); }
+
+  /* CONSENT */
+  .consent-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .consent-row input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    min-width: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    background: var(--card);
+    cursor: pointer;
+    margin-top: 1px;
+    position: relative;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .consent-row input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .consent-row input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 5px;
+    width: 5px; height: 9px;
+    border: 2px solid var(--white);
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+  }
+
+  .consent-row input[type="checkbox"].error-highlight {
+    border-color: var(--error);
+  }
+
+  .consent-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+  }
+
+  .consent-label a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .consent-label a:hover { color: #ea6c0a; }
+
+  /* SUBMIT BUTTON */
+  .book-btn {
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 16px 28px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, transform 0.1s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .book-btn:hover { background: #ea6c0a; }
+  .book-btn:active { transform: scale(0.97); }
+
+  /* OVERLAY (dim page behind panel) */
+  .panel-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    backdrop-filter: blur(2px);
+  }
+
+  .panel-overlay.visible { opacity: 1; pointer-events: all; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: 24px; right: 24px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 200;
+    transform: translateX(120%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 360px;
+    line-height: 1.5;
+  }
+
+  .toast.show { transform: translateX(0); }
+  .toast.error { background: var(--error); color: white; }
+
+  /* ── RESPONSIVE ──────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .features-grid { grid-template-columns: 1fr; gap: 12px; }
+    .deal-inner { grid-template-columns: 1fr; gap: 32px; }
+    .fields-row { grid-template-columns: 1fr; }
+    .header-badge { display: none; }
+    .hero { padding: 52px 0 48px; }
+    .hero-number { letter-spacing: -2px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="wrap">
+    <div class="header-logo">
+      <img src="xgt_logo.webp" alt="XGT Fitness">
+    </div>
+    <div class="header-badge">New Member Offer</div>
+  </div>
+</header>
+
+<!-- ── HERO ───────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow">Intro offer · New members only</div>
+
+    <div class="hero-price-block">
+      <div class="hero-number">5</div>
+      <div class="hero-sessions-label">SESSIONS</div>
+      <div class="hero-price-line">
+        <span class="hero-for">FOR</span>
+        <span class="hero-dollar">$25</span>
+      </div>
+    </div>
+
+    <p class="hero-tagline">Stop thinking about it. 5 sessions, one price, no contract. Show up and see what XGT is about.</p>
+
+    <button class="hero-cta-btn" onclick="openForm()">
+      CLAIM YOUR OFFER
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div class="hero-trust">
+      <span>No contract</span>
+      <span class="hero-trust-dot"></span>
+      <span>No membership required</span>
+      <span class="hero-trust-dot"></span>
+      <span>Use within 7 days</span>
+      <span class="hero-trust-dot"></span>
+      <span>One-time purchase</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ──────────────────────────────────────────────────── -->
+<section class="features">
+  <div class="wrap">
+    <div class="section-label">Why XGT</div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Expert Coaching</div>
+        <div class="feature-body">Every session is led by a real coach. No wandering around figuring it out yourself.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔓</div>
+        <div class="feature-title">Zero Commitment</div>
+        <div class="feature-body">One-time purchase. No auto-renewing memberships, no hidden fees, no fine print.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💪</div>
+        <div class="feature-title">Feel It Fast</div>
+        <div class="feature-body">Our sessions are built to push you. You'll know exactly what you're capable of after day one.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DEAL DETAILS ───────────────────────────────────────────────── -->
+<section class="deal">
+  <div class="wrap">
+    <div class="deal-inner">
+      <div class="deal-left">
+        <div class="deal-title">Everything<br>you get <span>included.</span></div>
+        <ul class="deal-perks">
+          <li><span class="perk-dot"></span>5 full XGT training sessions</li>
+          <li><span class="perk-dot"></span>Valid for 7 days from purchase</li>
+          <li><span class="perk-dot"></span>Full facility access each visit</li>
+          <li><span class="perk-dot"></span>Expert coaching every session</li>
+          <li><span class="perk-dot"></span>No long-term commitment</li>
+        </ul>
+      </div>
+      <div class="deal-card">
+        <div class="deal-card-eyebrow">Trial Pack · One-time</div>
+        <div class="deal-card-price">$25</div>
+        <div class="deal-card-sessions">FOR 5 SESSIONS</div>
+        <div class="deal-card-divider"></div>
+        <div class="deal-card-note">New members only.<br>Cannot be combined with other offers.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ──────────────────────────────────────────────────── -->
+<section class="final-cta">
+  <div class="wrap">
+    <div class="final-cta-title">Ready to <span>train?</span></div>
+    <div class="final-cta-sub">5 sessions. $25. No excuses.</div>
+    <button class="hero-cta-btn" onclick="openForm()">
+      GET STARTED NOW
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</section>
+
+<!-- ── PANEL OVERLAY ──────────────────────────────────────────────── -->
+<div class="panel-overlay" id="panelOverlay" onclick="closeForm()"></div>
+
+<!-- ── INFO FORM PANEL ────────────────────────────────────────────── -->
+<div class="booking-panel" id="bookingPanel">
+  <div class="booking-inner">
+    <div class="panel-header">
+      <div class="panel-header-text">
+        <div class="panel-title">Claim Your Offer</div>
+        <div class="panel-subtitle">5 sessions for $25 — just enter your info to continue</div>
+      </div>
+      <button class="panel-close" onclick="closeForm()" aria-label="Close">×</button>
+    </div>
+
+    <div class="booking-fields">
+      <div class="fields-row">
+        <div class="field">
+          <label>First Name</label>
+          <input type="text" id="firstName" placeholder="Jane" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label>Last Name</label>
+          <input type="text" id="lastName" placeholder="Smith" autocomplete="family-name">
+        </div>
+      </div>
+      <div class="fields-row">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="jane@example.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <label>Phone Number</label>
+          <input type="tel" id="phone" placeholder="(555) 000-0000" autocomplete="tel">
+        </div>
+      </div>
+      <div class="fields-row" style="grid-template-columns: 1fr;">
+        <div class="field">
+          <label>Date of Birth</label>
+          <input type="text" id="dob" placeholder="MM/DD/YYYY" maxlength="10" inputmode="numeric" autocomplete="bday">
+        </div>
+      </div>
+    </div>
+
+    <div class="consent-row">
+      <input type="checkbox" id="consentTerms">
+      <label class="consent-label" for="consentTerms">By continuing, you agree to XGT Fitness's <a href="https://www.xgtfitness.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://www.xgtfitness.com/terms-of-use" target="_blank" rel="noopener">Terms of Use</a>.</label>
+    </div>
+    <div class="consent-row" style="margin-bottom: 20px;">
+      <input type="checkbox" id="consentSms">
+      <label class="consent-label" for="consentSms">I agree to receive automated promotional and informational text messages from XGT Fitness. Consent is not a condition of purchase. Msg &amp; data rates may apply. Reply STOP to unsubscribe.</label>
+    </div>
+
+    <button class="book-btn" onclick="goToPayment()">
+      CONTINUE TO PAYMENT
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M2 8h12M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function openForm() {
+    document.getElementById('bookingPanel').classList.add('visible');
+    document.getElementById('panelOverlay').classList.add('visible');
+    document.getElementById('firstName').focus({ preventScroll: true });
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeForm() {
+    document.getElementById('bookingPanel').classList.remove('visible');
+    document.getElementById('panelOverlay').classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast error show';
+    setTimeout(() => toast.classList.remove('show'), 4000);
+  }
+
+  document.getElementById('phone').addEventListener('input', function(e) {
+    let v = e.target.value.replace(/\D/g,'');
+    if (v.length === 11 && v.startsWith('1')) v = v.slice(1);
+    v = v.substring(0,10);
+    if (v.length >= 7)      v = `(${v.slice(0,3)}) ${v.slice(3,6)}-${v.slice(6)}`;
+    else if (v.length >= 4) v = `(${v.slice(0,3)}) ${v.slice(3)}`;
+    else if (v.length > 0)  v = `(${v}`;
+    e.target.value = v;
+  });
+
+  document.getElementById('dob').addEventListener('input', function(e) {
+    let v = e.target.value.replace(/\D/g,'').substring(0,8);
+    if (v.length >= 5)      v = v.slice(0,2)+'/'+v.slice(2,4)+'/'+v.slice(4);
+    else if (v.length >= 3) v = v.slice(0,2)+'/'+v.slice(2);
+    e.target.value = v;
+  });
+
+  function goToPayment() {
+    const firstName    = document.getElementById('firstName').value.trim();
+    const lastName     = document.getElementById('lastName').value.trim();
+    const email        = document.getElementById('email').value.trim();
+    const phone        = document.getElementById('phone').value.trim();
+    const dob          = document.getElementById('dob').value.trim();
+    const consentTerms = document.getElementById('consentTerms');
+    const consentSms   = document.getElementById('consentSms');
+
+    if (!firstName)                     { showToast('Please enter your first name.'); return; }
+    if (!lastName)                      { showToast('Please enter your last name.'); return; }
+    if (!email || !email.includes('@')) { showToast('Please enter a valid email address.'); return; }
+    if (!phone)                         { showToast('Please enter your phone number.'); return; }
+    if (!dob)                           { showToast('Please enter your date of birth.'); return; }
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dob)) { showToast('Please enter date of birth as MM/DD/YYYY.'); return; }
+    if (!consentTerms.checked) {
+      consentTerms.classList.add('error-highlight');
+      showToast('Please agree to the Privacy Policy and Terms to continue.');
+      return;
+    }
+    consentTerms.classList.remove('error-highlight');
+
+    sessionStorage.setItem('booking_email',       email);
+    sessionStorage.setItem('booking_first_name',  firstName);
+    sessionStorage.setItem('booking_last_name',   lastName);
+    sessionStorage.setItem('booking_phone',       phone);
+    sessionStorage.setItem('booking_dob',         dob);
+    sessionStorage.setItem('booking_sms_consent', consentSms.checked ? 'true' : 'false');
+
+    // Fire-and-forget user creation so payment page wallet loads faster
+    fetch('/.netlify/functions/user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, firstName, lastName, phone }),
+    }).catch(() => {});
+
+    window.location.href = 'payment.html';
+  }
+</script>
+
+</body>
+</html>

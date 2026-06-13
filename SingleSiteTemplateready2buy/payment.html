@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Your Purchase — XGT Fitness</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #1a1a1a;
+    --border: #2a2a2a;
+    --border2: #333333;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.08);
+    --white: #ffffff;
+    --gray: #888888;
+    --gray2: #555555;
+    --success: #22c55e;
+    --error: #ef4444;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 70% 10%, rgba(249,115,22,0.04) 0%, transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .page-header {
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .gym-logo { font-family: 'Bebas Neue', sans-serif; font-size: 42px; line-height: 0.9; letter-spacing: -1px; }
+  .gym-logo span { color: var(--accent); }
+
+  .back-link { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+  .back-link:hover { color: var(--white); }
+
+  .progress-steps { display: flex; align-items: center; margin-bottom: 40px; }
+  .step { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+  .step.done .step-num { background: var(--accent); color: var(--white); }
+  .step.done .step-label { color: var(--gray); }
+  .step.active .step-num { background: var(--white); color: var(--white); }
+  .step.active .step-label { color: var(--white); }
+  .step.pending .step-num { background: transparent; border: 1px solid var(--border2); color: var(--gray2); }
+  .step.pending .step-label { color: var(--gray2); }
+  .step-divider { flex: 1; height: 1px; background: var(--border); margin: 0 12px; max-width: 48px; }
+
+  .checkout-grid { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
+
+  .order-summary { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; position: sticky; top: 24px; }
+
+  @media (max-width: 760px) {
+    .checkout-grid { grid-template-columns: 1fr; }
+    .order-summary { order: -1; position: static; }
+  }
+  .summary-header { padding: 18px 24px; border-bottom: 1px solid var(--border); }
+  .summary-header-title { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gray); }
+  .summary-body { padding: 24px; }
+
+  .class-badge { background: var(--accent-dim); border: 1px solid rgba(249,115,22,0.15); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+  .class-badge-icon { font-size: 18px; flex-shrink: 0; }
+  .class-badge-name { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--accent); line-height: 1; margin-bottom: 2px; }
+  .class-badge-time { font-size: 12px; color: rgba(255,255,255,0.45); }
+
+  .package-name { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--white); line-height: 1; margin-bottom: 4px; }
+  .package-tagline { font-size: 13px; color: var(--gray); font-weight: 300; margin-bottom: 20px; }
+  .package-perks { list-style: none; margin-bottom: 24px; }
+  .package-perks li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255,255,255,0.65); padding: 7px 0; border-bottom: 1px solid var(--border); font-weight: 300; }
+  .package-perks li:last-child { border-bottom: none; }
+  .perk-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  .price-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .price-row .label { font-size: 13px; color: var(--gray); }
+  .price-row .value { font-size: 14px; color: var(--white); }
+  .price-total { display: flex; justify-content: space-between; align-items: baseline; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .price-total .label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+  .price-total .amount { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: var(--accent); letter-spacing: -1px; line-height: 1; }
+
+  .form-panel { display: flex; flex-direction: column; gap: 20px; }
+
+  .form-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; animation: fadeUp 0.35s ease both; }
+  .form-section:nth-child(2) { animation-delay: 0.07s; }
+  .form-section:nth-child(3) { animation-delay: 0.14s; }
+  .form-section:nth-child(4) { animation-delay: 0.21s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .form-section-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .form-section-num { width: 22px; height: 22px; background: var(--accent); color: var(--white); border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .form-section-title { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--white); }
+  .form-section-body { padding: 24px; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .field-row.full { grid-template-columns: 1fr; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); }
+  .field input { background: var(--dark); border: 1px solid var(--border); border-radius: 7px; padding: 13px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--white); outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; }
+  .field input::placeholder { color: var(--gray2); }
+  .field input:focus { border-color: rgba(249,115,22,0.4); box-shadow: 0 0 0 3px rgba(249,115,22,0.06); }
+  .field input.error { border-color: rgba(239,68,68,0.5); box-shadow: 0 0 0 3px rgba(239,68,68,0.06); }
+
+  /* WALLET */
+  .wallet-status { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; }
+  .wallet-status.loading { background: var(--dark); border: 1px solid var(--border); color: var(--gray); }
+  .wallet-status.ready { background: var(--accent-dim); border: 1px solid rgba(249,115,22,0.2); color: rgba(255,255,255,0.8); }
+  .wallet-status.done { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); color: var(--success); }
+  .wallet-status.error { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: var(--error); }
+
+  .wallet-open-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; background: var(--dark); border: 1px dashed rgba(232,255,0,0.3); border-radius: 8px; color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
+  .wallet-open-btn:hover { background: var(--accent-dim); border-color: rgba(249,115,22,0.6); }
+  .wallet-open-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .small-spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* PROMO */
+  .promo-row { display: flex; gap: 8px; }
+  .promo-row input { flex: 1; background: var(--dark); border: 1px solid var(--border); border-radius: 7px; padding: 13px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--white); outline: none; transition: border-color 0.2s; letter-spacing: 1.5px; text-transform: uppercase; }
+  .promo-row input::placeholder { color: var(--gray2); text-transform: none; letter-spacing: 0; }
+  .promo-row input:focus { border-color: rgba(249,115,22,0.4); }
+  .promo-apply-btn { background: transparent; border: 1px solid var(--border2); border-radius: 7px; padding: 13px 18px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--gray); cursor: pointer; white-space: nowrap; transition: border-color 0.2s, color 0.2s; flex-shrink: 0; }
+  .promo-apply-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .promo-feedback { font-size: 12px; margin-top: 8px; display: none; align-items: center; gap: 6px; }
+  .promo-feedback.success { display: flex; color: var(--success); }
+  .promo-feedback.error { display: flex; color: var(--error); }
+
+  .info-note { display: flex; gap: 10px; padding: 14px 16px; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.15); border-radius: 8px; font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.6; font-weight: 300; }
+  .info-note-icon { flex-shrink: 0; font-size: 14px; }
+
+  .submit-btn { width: 100%; background: var(--accent); color: var(--white); border: none; border-radius: 9px; padding: 18px 24px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s, transform 0.1s, box-shadow 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .submit-btn:hover { background: #ea6c0a; box-shadow: 0 8px 32px rgba(249,115,22,0.2); transform: translateY(-1px); }
+  .submit-btn:disabled { background: var(--border); color: var(--gray2); cursor: not-allowed; box-shadow: none; transform: none; }
+
+  .loading-overlay { position: fixed; inset: 0; background: rgba(10,10,10,0.92); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
+  .loading-overlay.visible { opacity: 1; pointer-events: all; }
+  .loading-box { text-align: center; max-width: 320px; padding: 24px; }
+  .big-spinner { width: 52px; height: 52px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 24px; }
+  .loading-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px; margin-bottom: 8px; }
+  .loading-steps-track { display: flex; flex-direction: column; gap: 6px; margin-top: 24px; text-align: left; }
+  .loading-step-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--gray2); transition: color 0.3s; }
+  .loading-step-item.active { color: var(--white); }
+  .loading-step-item.done { color: var(--success); }
+  .step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); flex-shrink: 0; transition: background 0.3s; }
+  .loading-step-item.active .step-dot { background: var(--accent); }
+  .loading-step-item.done .step-dot { background: var(--success); }
+
+  .no-session { text-align: center; padding: 80px 24px; color: var(--gray); }
+  .no-session a { color: var(--accent); text-decoration: none; }
+
+  #walletIframe { height: 560px; overflow: hidden; }
+  #walletIframeWrap { overflow: hidden; }
+  @media (max-width: 760px) {
+    #walletIframe { height: 680px; }
+  }
+
+  /* TERMS OF SERVICE */
+  .tos-agree-row { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+  .tos-agree-row input[type="checkbox"] { margin-top: 2px; accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+  .tos-agree-label { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.5; user-select: none; }
+  .tos-link { color: var(--accent); text-decoration: underline; cursor: pointer; }
+  .tos-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .tos-modal { background: var(--card); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 640px; max-height: 80vh; display: flex; flex-direction: column; }
+  .tos-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); font-size: 15px; font-weight: 600; color: #fff; letter-spacing: 0.03em; }
+  .tos-modal-close { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 24px; cursor: pointer; line-height: 1; padding: 0; }
+  .tos-modal-close:hover { color: #fff; }
+  .tos-modal-body { overflow-y: auto; padding: 20px; font-size: 12px; line-height: 1.75; color: rgba(255,255,255,0.65); }
+  .tos-modal-body::-webkit-scrollbar { width: 4px; }
+  .tos-modal-body::-webkit-scrollbar-track { background: transparent; }
+  .tos-modal-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="big-spinner"></div>
+    <div class="loading-title">Processing Your Order</div>
+    <div class="loading-steps-track">
+      <div class="loading-step-item" id="step-account"><div class="step-dot"></div><span>Setting up your account</span></div>
+      <div class="loading-step-item" id="step-card"><div class="step-dot"></div><span>Saving payment method</span></div>
+      <div class="loading-step-item" id="step-agreement"><div class="step-dot"></div><span>Preparing your agreement</span></div>
+      <div class="loading-step-item" id="step-charge"><div class="step-dot"></div><span>Processing payment</span></div>
+      <div class="loading-step-item" id="step-booking"><div class="step-dot"></div><span>Confirming your package</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+  <div class="page-header">
+    <div class="gym-logo"><img src="xgt_logo.webp" alt="XGT Fitness" style="height:48px;width:auto;display:block;"></div>
+    <a class="back-link" href="index.html">← Back</a>
+  </div>
+
+  <div id="noSession" class="no-session" style="display:none;">
+    <p>No booking session found.</p>
+    <p style="margin-top:12px;"><a href="index.html">← Back to schedule</a></p>
+  </div>
+
+  <div id="mainContent">
+    <div class="progress-steps">
+      <div class="step done"><div class="step-num">✓</div><div class="step-label">Info</div></div>
+      <div class="step-divider"></div>
+      <div class="step active"><div class="step-num">2</div><div class="step-label">Payment</div></div>
+      <div class="step-divider"></div>
+      <div class="step pending"><div class="step-num">3</div><div class="step-label">Confirmed</div></div>
+    </div>
+
+    <div class="checkout-grid">
+      <div class="form-panel">
+
+        <!-- STEP 1: PAYMENT FIRST (TempStUser wallet — no account needed yet) -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-num">1</div>
+            <div class="form-section-title">Payment Details</div>
+          </div>
+          <div class="form-section-body">
+            <div class="wallet-status loading" id="walletStatus">
+              <span id="walletStatusMsg">Enter your email above — payment form will load automatically</span>
+            </div>
+            <div id="walletIframeWrap" style="display:none;border-radius:8px;overflow:hidden;border:1px solid var(--border);">
+              <iframe id="walletIframe" src="https://clubready.com/sales/wallet"
+                style="width:100%;border:none;display:block;background:#fff;overflow:hidden;"
+                allow="payment"
+                scrolling="no">
+              </iframe>
+
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:14px;font-size:11px;color:var(--gray2);">
+              <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><path d="M6 0L0 2.5V6.5C0 9.89 2.58 13.06 6 14C9.42 13.06 12 9.89 12 6.5V2.5L6 0Z" fill="currentColor"/></svg>
+              Card details are entered directly into ClubReady's encrypted vault — we never see your card number.
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: YOUR INFO -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-num">2</div>
+            <div class="form-section-title">Your Information</div>
+          </div>
+          <div class="form-section-body">
+            <div class="field-row">
+              <div class="field"><label for="firstName">First Name</label><input type="text" id="firstName" placeholder="Jane" autocomplete="given-name"></div>
+              <div class="field"><label for="lastName">Last Name</label><input type="text" id="lastName" placeholder="Smith" autocomplete="family-name"></div>
+            </div>
+            <div class="field-row full">
+              <div class="field"><label for="email">Email Address</label><input type="email" id="email" placeholder="jane@example.com" autocomplete="email"></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="phone">Phone Number</label><input type="tel" id="phone" placeholder="(555) 000-0000" autocomplete="tel"></div>
+              <div class="field"><label for="dob">Date of Birth</label><input type="text" id="dob" placeholder="MM/DD/YYYY" maxlength="10" inputmode="numeric"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: TERMS OF SERVICE -->
+        <div class="form-section" id="tosSection" style="display:none;">
+          <div class="form-section-header">
+            <div class="form-section-num">3</div>
+            <div class="form-section-title">Terms of Service</div>
+          </div>
+          <div class="form-section-body">
+            <label class="tos-agree-row">
+              <input type="checkbox" id="tosCheckbox">
+              <span class="tos-agree-label">I have read and agree to the <a class="tos-link" id="tosLink">Terms of Service</a></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- TOS MODAL -->
+        <div class="tos-modal-overlay" id="tosModal" style="display:none;">
+          <div class="tos-modal">
+            <div class="tos-modal-header">
+              <span>Terms of Service</span>
+              <button class="tos-modal-close" id="tosModalClose">&times;</button>
+            </div>
+            <div class="tos-modal-body" id="tosModalBody">
+              <div class="wallet-status loading" id="tosModalLoading">
+                <div class="small-spinner"></div> <span>Loading agreement...</span>
+              </div>
+              <div id="tosModalContent" style="display:none;"></div>
+              <div class="wallet-status error" id="tosModalError" style="display:none;">
+                <span id="tosModalErrorMsg"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: PROMO -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-num" style="background:transparent;border:1px solid var(--border2);color:var(--gray);">%</div>
+            <div class="form-section-title">Promo Code</div>
+          </div>
+          <div class="form-section-body">
+            <div class="promo-row">
+              <input type="text" id="promoCode" placeholder="Enter code (optional)" maxlength="20">
+              <button id="promoApplyBtn" class="promo-apply-btn" onclick="applyPromo()">Apply</button>
+            </div>
+            <div class="promo-feedback" id="promoFeedback"></div>
+          </div>
+        </div>
+
+        <div class="info-note">
+          <div class="info-note-icon">ℹ️</div>
+          <div>Your 5-session trial package activates immediately. Your first session will be booked automatically for the session you selected.</div>
+        </div>
+
+        <button class="submit-btn" id="submitBtn" onclick="processPayment()" disabled>
+          <span id="submitBtnText">Confirm Booking — $25</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <p style="font-size:11px;color:var(--gray2);text-align:center;margin-top:8px;" id="submitHint">Enter your card details above to continue</p>
+
+      </div>
+
+      <!-- ORDER SUMMARY -->
+      <div class="order-summary">
+        <div class="summary-header"><span class="summary-header-title">Order Summary</span></div>
+        <div class="summary-body">
+          <div id="classBadge" class="class-badge" style="display:none;">
+            <div class="class-badge-icon">🏋️</div>
+            <div>
+              <div class="class-badge-name" id="badgeClassName">—</div>
+              <div class="class-badge-time" id="badgeClassTime">—</div>
+            </div>
+          </div>
+          <div class="package-name">5 FOR $25</div>
+          <div class="package-tagline">Trial Session Pack · One-time purchase</div>
+          <ul class="package-perks">
+            <li><span class="perk-dot"></span>5 XGT sessions</li>
+            <li><span class="perk-dot"></span>Use within 7 days</li>
+            <li><span class="perk-dot"></span>No membership required</li>
+            <li><span class="perk-dot"></span>First session booked instantly</li>
+          </ul>
+          <div class="price-row"><span class="label">5-Session Trial Pack</span><span class="value" id="summaryLinePrice">$25.00</span></div>
+          <div class="price-row"><span class="label">Processing fee</span><span class="value">$0.00</span></div>
+          <div class="price-total"><span class="label">Total Due</span><span class="amount" id="summaryTotal">$25</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const CONFIG = {
+    BASE_URL: '/.netlify/functions',
+    DEV_CODE: 'FREE TRIAL',
+    AMOUNT:   25.00,
+  };
+
+  // Session data
+  const prefEmail = sessionStorage.getItem('booking_email');
+  const prefFirst = sessionStorage.getItem('booking_first_name');
+  const prefPhone = sessionStorage.getItem('booking_phone');
+
+  // State — declared before initialization block to avoid TDZ errors
+  let profileToken  = null;
+  let cardEntered   = false;
+  let walletUserId   = null;
+  let walletPageToken = null;
+  let walletPopup   = null;
+  let walletPageUrl = null;
+  let promoApplied  = false;
+  let promoCodeValue = null;
+  let _userCreatePromise = null; // deduplicates concurrent getOrCreateUser calls
+
+  // iOS fix — scroll to top on load
+  window.scrollTo(0, 0);
+
+  if (prefFirst) document.getElementById('firstName').value = prefFirst;
+  if (prefEmail) document.getElementById('email').value = prefEmail;
+  if (prefPhone) document.getElementById('phone').value = prefPhone;
+  const prefLast = sessionStorage.getItem('booking_last_name');
+  if (prefLast)  document.getElementById('lastName').value = prefLast;
+  const prefDob = sessionStorage.getItem('booking_dob');
+  if (prefDob)   document.getElementById('dob').value = prefDob;
+
+  // If we have email from index.html, init wallet immediately
+  // Otherwise wait for email blur
+  if (prefEmail) {
+    initWallet();
+  } else {
+    document.getElementById('email').addEventListener('blur', function() {
+      if (this.value.includes('@') && !walletUserId) initWallet();
+    }, { once: true });
+  }
+
+  // ── STEP 1: Get wallet token as TempStUser (no account needed) ────
+  async function initWallet() {
+    setWalletStatus('loading', '<div class="small-spinner"></div> Setting up your payment form...');
+    try {
+      console.log('[payment] firing getOrCreateUser at:', Date.now());
+      const userResult = await getOrCreateUser();
+      if (!userResult.userId) throw new Error(userResult.error || 'Could not set up account');
+      walletUserId = userResult.userId;
+
+      // Fetch ToS in the background — does not block the wallet from loading
+      fetchAndShowTos(walletUserId);
+
+      setWalletStatus('loading', '<div class="small-spinner"></div> Loading payment form...');
+      const res  = await fetch(`${CONFIG.BASE_URL}/wallet`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: walletUserId }),
+      });
+      const data = await res.json();
+
+      if (!data.walletUrl || !data.walletToken) {
+        throw new Error(data.error || 'Could not load payment form');
+      }
+
+      walletPageToken = data.walletToken;
+      walletPageUrl   = data.walletUrl;
+
+      setWalletStatus('ready', '🔒 Enter your card details below');
+      showWalletIframe();
+
+    } catch (err) {
+      setWalletStatus('error', '⚠️ Could not load payment form — ' + err.message);
+    }
+  }
+
+  // Fetches contract HTML in the background and stores it for the modal.
+  // Shows the TOS section (checkbox) immediately without waiting for the fetch.
+  async function fetchAndShowTos(userId) {
+    document.getElementById('tosSection').style.display = 'block';
+
+    try {
+      const res  = await fetch(`${CONFIG.BASE_URL}/get-agreement-preview`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.contractHtml) {
+        throw new Error(data.error || 'Contract text not available');
+      }
+
+      document.getElementById('tosModalLoading').style.display = 'none';
+      document.getElementById('tosModalContent').innerHTML = data.contractHtml;
+      document.getElementById('tosModalContent').style.display = 'block';
+    } catch (err) {
+      console.warn('[tos] could not load contract:', err.message);
+      document.getElementById('tosModalLoading').style.display = 'none';
+      document.getElementById('tosModalErrorMsg').textContent =
+        'Could not load agreement (' + err.message + ').';
+      document.getElementById('tosModalError').style.display = 'flex';
+    }
+  }
+
+  document.getElementById('tosLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('tosModal').style.display = 'flex';
+  });
+
+  document.getElementById('tosModalClose').addEventListener('click', function() {
+    document.getElementById('tosModal').style.display = 'none';
+  });
+
+  document.getElementById('tosModal').addEventListener('click', function(e) {
+    if (e.target === this) this.style.display = 'none';
+  });
+
+  function setWalletStatus(type, msg) {
+    const el = document.getElementById('walletStatus');
+    el.className = 'wallet-status ' + type;
+    el.innerHTML = msg;
+  }
+
+  // ── STEP 2: Show wallet iframe ────────────────────────────────────
+  function showWalletIframe() {
+    const wrap   = document.getElementById('walletIframeWrap');
+    const iframe = document.getElementById('walletIframe');
+    wrap.style.display = 'block';
+
+    // Send token when iframe fires document.ready (handled in postMessage listener)
+    // Also send after delay as fallback
+    setTimeout(() => {
+      sendTokenToFrame();
+    }, 1500);
+  }
+
+  function sendTokenToFrame() {
+    const iframe = document.getElementById('walletIframe');
+    if (!iframe || !walletPageToken) return;
+    iframe.contentWindow.postMessage(
+      { eventPath: 'wallet.walletTokenReady', walletToken: walletPageToken },
+      'https://clubready.com'
+    );
+  }
+
+  // ── Listen for ProfileToken from wallet popup ─────────────────────
+  window.addEventListener('message', function(e) {
+    // Log everything before any filtering so we can see what ClubReady sends
+
+    // Ignore MetaMask, React DevTools, and other extension noise
+    if (!e.data) return;
+
+    // Only filter source if it's NOT from clubready
+    if (e.data.source && e.origin !== 'https://clubready.com') return;
+
+    const dataStr = JSON.stringify(e.data).toLowerCase();
+    if (dataStr.includes('metamask')) return;
+    if (dataStr.includes('contentscript')) return;
+
+    const d = typeof e.data === 'string' ? tryJson(e.data) : e.data;
+    if (!d) return;
+
+
+    // Wallet page sends document.ready when it loads — respond with walletTokenReady
+    if (d.eventPath === 'document.ready') {
+      sendTokenToFrame();
+      return;
+    }
+
+    // Wallet page sends wallet.profileAdded when card is saved
+    if (d.eventPath === 'wallet.profileAdded') {
+      const token = d.ProfileToken || d.profileToken || d.AcctToken || d.acctToken;
+      if (token) profileToken = token;
+      cardEntered = true;
+      // Hide iframe, show done status
+      document.getElementById('walletIframeWrap').style.display = 'none';
+      setWalletStatus('done', '✓ Card saved securely — ready to complete purchase');
+      updateSubmitBtn();
+      return;
+    }
+
+    // Wallet page sends wallet.profileAddCancelled if user closes without saving
+    if (d.eventPath === 'wallet.profileAddCancelled') {
+      // Keep iframe visible so user can try again
+      setWalletStatus('ready', '🔒 Enter your card details below');
+      return;
+    }
+  });
+
+  function tryJson(s) { try { return JSON.parse(s); } catch { return null; } }
+
+  // ── Input formatters ──────────────────────────────────────────────
+  document.getElementById('phone').addEventListener('input', function(e) {
+    let v = e.target.value.replace(/\D/g,'');
+    if (v.length === 11 && v.startsWith('1')) v = v.slice(1);
+    v = v.substring(0,10);
+    if (v.length >= 7)      v = `(${v.slice(0,3)}) ${v.slice(3,6)}-${v.slice(6)}`;
+    else if (v.length >= 4) v = `(${v.slice(0,3)}) ${v.slice(3)}`;
+    else if (v.length > 0)  v = `(${v}`;
+    e.target.value = v;
+  });
+
+  document.getElementById('dob').addEventListener('input', function(e) {
+    let v = e.target.value.replace(/\D/g,'').substring(0,8);
+    if (v.length >= 5)      v = v.slice(0,2)+'/'+v.slice(2,4)+'/'+v.slice(4);
+    else if (v.length >= 3) v = v.slice(0,2)+'/'+v.slice(2);
+    e.target.value = v;
+    updateSubmitBtn();
+  });
+
+  // Re-check button state as info fields are filled in
+  ['firstName','lastName','email','phone','dob'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updateSubmitBtn);
+  });
+  document.getElementById('tosCheckbox').addEventListener('change', updateSubmitBtn);
+
+  // ── Promo code ────────────────────────────────────────────────────
+  async function applyPromo() {
+    const rawCode = document.getElementById('promoCode').value.trim();
+    const code = rawCode.toUpperCase();
+    const fb   = document.getElementById('promoFeedback');
+    const applyBtn = document.getElementById('promoApplyBtn');
+    fb.className = 'promo-feedback';
+    fb.textContent = '';
+    if (!code) return;
+
+    console.log('Applying promo code:', rawCode);
+    applyBtn.disabled = true;
+
+    if (code === CONFIG.DEV_CODE.toUpperCase()) {
+      promoApplied = true;
+      promoCodeValue = code;
+      document.getElementById('promoCode').disabled = true;
+      fb.className = 'promo-feedback success';
+      fb.textContent = '✓ Dev code applied — charge will be $0';
+      document.getElementById('summaryLinePrice').textContent = '$0.00';
+      document.getElementById('summaryTotal').textContent = '$0';
+      document.getElementById('submitBtnText').textContent = 'Confirm Booking — FREE';
+      cardEntered = true;
+      updateSubmitBtn();
+      applyBtn.disabled = false;
+      return;
+    }
+
+    fb.textContent = 'Validating promo code...';
+
+    try {
+      const res = await fetch(`${CONFIG.BASE_URL}/promo`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ promoCode: code }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Invalid promo code');
+      }
+
+      promoApplied = true;
+      promoCodeValue = code;
+      document.getElementById('promoCode').disabled = true;
+      document.getElementById('summaryLinePrice').textContent = data.packagePrice != null ? `$${data.packagePrice.toFixed(2)}` : document.getElementById('summaryLinePrice').textContent;
+      document.getElementById('summaryTotal').textContent = data.dueToday != null ? `$${data.dueToday.toFixed(2)}` : document.getElementById('summaryTotal').textContent;
+      document.getElementById('submitBtnText').textContent = data.dueToday === 0 ? 'Confirm Booking — FREE' : 'Confirm Booking';
+      if (data.dueToday === 0) cardEntered = true;
+
+      fb.className = 'promo-feedback success';
+      fb.textContent = data.dueToday === 0 ? '✓ Promo code validated — no charge today' : '✓ Promo code validated';
+    } catch (err) {
+      promoApplied = false;
+      promoCodeValue = null;
+      fb.className = 'promo-feedback error';
+      fb.textContent = `✗ ${err.message}`;
+    } finally {
+      applyBtn.disabled = false;
+      updateSubmitBtn();
+    }
+  }
+
+  document.getElementById('promoCode').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); applyPromo(); } });
+
+  // ── Submit button state ───────────────────────────────────────────
+  function normalizeDob(rawDob) {
+    const value = rawDob.trim();
+    const match = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!match) return null;
+
+    const [, month, day, year] = match;
+    const date = new Date(`${year}-${month}-${day}`);
+    if (Number.isNaN(date.getTime())) return null;
+    if (date.getUTCFullYear() !== Number(year) || date.getUTCMonth() + 1 !== Number(month) || date.getUTCDate() !== Number(day)) return null;
+
+    return `${year}-${month}-${day}`;
+  }
+
+  function updateSubmitBtn() {
+    const btn  = document.getElementById('submitBtn');
+    const hint = document.getElementById('submitHint');
+
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName  = document.getElementById('lastName').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const phone     = document.getElementById('phone').value.trim();
+    const dobValue  = document.getElementById('dob').value.trim();
+    const dob       = normalizeDob(dobValue);
+
+    const hasInfo  = firstName && lastName && email.includes('@') && phone.length >= 10 && !!dob;
+    const hasCard  = cardEntered || promoApplied;
+    const tosCb    = document.getElementById('tosCheckbox');
+    const tosAgreed = tosCb ? tosCb.checked : true; // true if section not yet shown
+
+    if (!hasCard) {
+      hint.textContent = 'Enter your card details above to continue';
+    } else if (!hasInfo) {
+      hint.textContent = 'Please complete your information above';
+    } else if (!tosAgreed) {
+      hint.textContent = 'Please agree to the Terms of Service above';
+    } else {
+      hint.textContent = '';
+    }
+
+    btn.disabled = !(hasCard && hasInfo && tosAgreed);
+  }
+
+  // ── Get or create user from form fields ─────────────────────────
+  // Wraps _doGetOrCreateUser so concurrent callers share one in-flight request.
+  async function getOrCreateUser() {
+    if (walletUserId) return { userId: walletUserId };
+    if (_userCreatePromise) return _userCreatePromise;
+    _userCreatePromise = _doGetOrCreateUser().then(result => {
+      if (result.userId) walletUserId = result.userId;
+      _userCreatePromise = null;
+      return result;
+    }).catch(err => {
+      _userCreatePromise = null;
+      return { error: err.message };
+    });
+    return _userCreatePromise;
+  }
+
+  async function _doGetOrCreateUser() {
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName  = document.getElementById('lastName').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const phone     = document.getElementById('phone').value.replace(/\D/g,'');
+    const dobRaw    = document.getElementById('dob').value.trim();
+    const dob       = normalizeDob(dobRaw);
+
+    if (!email.includes('@')) return { error: 'Please enter a valid email address first' };
+    if (!firstName || !lastName) return { error: 'Please enter your name and email first' };
+    if (dobRaw && !dob) return { error: 'Please enter a valid date of birth in MM/DD/YYYY format' };
+
+    try {
+      const payload = { email, firstName, lastName, phone, dob };
+      console.log('[user] sending payload to /user function:', JSON.stringify(payload));
+      console.log('[user] DOB value being sent:', dob);
+      const res  = await fetch(`${CONFIG.BASE_URL}/user`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      console.log('[user] response:', JSON.stringify(data));
+      if (!data.userId) return { error: data.error || 'Could not create account' };
+      return { userId: data.userId };
+    } catch(err) {
+      return { error: err.message };
+    }
+  }
+
+  // ── Loading steps ─────────────────────────────────────────────────
+  function setStep(id, state) {
+    const el = document.getElementById(id);
+    el.classList.remove('active','done');
+    if (state) el.classList.add(state);
+  }
+
+  // ── MAIN: Complete the purchase ───────────────────────────────────
+  async function processPayment() {
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName  = document.getElementById('lastName').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const phone     = document.getElementById('phone').value.replace(/\D/g,'');
+    const dob       = document.getElementById('dob').value.trim();
+
+    if (!firstName || !lastName || !email.includes('@')) {
+      showToast('Please fill in your name and email address.');
+      return;
+    }
+    if (!profileToken && !promoApplied) {
+      showToast('Please enter your card details first.');
+      return;
+    }
+
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('loadingOverlay').classList.add('visible');
+
+    try {
+      // ── A: Find or create user account ───────────────────────────
+      setStep('step-account', 'active');
+      // Reuse walletUserId if wallet already loaded for this user
+      let userId = walletUserId;
+      if (!userId) {
+        const result = await getOrCreateUser();
+        if (!result.userId) throw new Error(result.error || 'Could not create account');
+        userId = result.userId;
+      }
+      setStep('step-account', 'done');
+
+      // ── B-E: All handled server-side via /purchase function ─────────
+      setStep('step-card', 'active');
+
+      const purchaseRes  = await fetch(`${CONFIG.BASE_URL}/purchase`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId,
+          profileToken:  profileToken || null,
+          promoApplied,
+          promoCode: promoCodeValue,
+          amount: CONFIG.AMOUNT,
+        }),
+      });
+      const purchaseData = await purchaseRes.json();
+
+      if (!purchaseData.success) throw new Error(purchaseData.error || 'Payment failed — please try again');
+
+      setStep('step-card', 'done');
+      setStep('step-agreement', 'done');
+      setStep('step-charge', 'done');
+      setStep('step-booking', 'done');
+
+      // Save for confirm page
+      sessionStorage.setItem('booking_booking_id',  purchaseData.bookingId || '');
+      sessionStorage.setItem('booking_paid',        'true');
+      sessionStorage.setItem('booking_user_id',     userId);
+      sessionStorage.setItem('booking_first_name',  firstName);
+      sessionStorage.setItem('booking_promo',       promoApplied ? 'true' : 'false');
+      sessionStorage.setItem('booking_amount',      promoApplied ? '0' : '25');
+
+      await new Promise(r => setTimeout(r, 600));
+      window.location.href = 'confirm.html';
+
+    } catch (err) {
+      console.error('[processPayment] error:', err);
+      document.getElementById('loadingOverlay').classList.remove('visible');
+      document.getElementById('submitBtn').disabled = false;
+      showToast(err.message || 'Something went wrong. Please try again.');
+    }
+  }
+
+  function showToast(msg) {
+    let t = document.getElementById('toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'toast';
+      t.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+        background:#1a0a0a;border:1px solid rgba(239,68,68,0.4);color:#ef4444;
+        padding:14px 20px;border-radius:8px;font-size:13px;z-index:200;
+        max-width:480px;width:calc(100% - 48px);text-align:center;
+        box-shadow:0 8px 32px rgba(0,0,0,0.5);`;
+      document.body.appendChild(t);
+    }
+    t.textContent = '⚠️  ' + msg;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 6000);
+  }
+</script>
+</body>
+</html>
